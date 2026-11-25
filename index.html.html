@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lăng Chủ Tịch Hồ Chí Minh | Ho Chi Minh Mausoleum</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display (Serif) & Be Vietnam Pro (Sans-serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                        sans: ['"Be Vietnam Pro"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        vermilion: {
+                            DEFAULT: '#8B1E1E',
+                            dark: '#631212',
+                            light: '#A82828'
+                        },
+                        bronze: {
+                            DEFAULT: '#C59B27',
+                            light: '#E2C05B',
+                            dark: '#967213'
+                        },
+                        granite: {
+                            DEFAULT: '#374151',
+                            light: '#4B5563',
+                            dark: '#1F2937'
+                        },
+                        cream: {
+                            DEFAULT: '#FAF7F2',
+                            dark: '#F0EAE1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom subtle patterns & panorama smooth drag */
+        .lotus-pattern {
+            background-color: #FAF7F2;
+            background-image: radial-gradient(#C59B27 0.75px, transparent 0.75px), radial-gradient(#C59B27 0.75px, #FAF7F2 0.75px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+            background-attachment: fixed;
+        }
+        .panorama-viewport {
+            cursor: grab;
+            user-select: none;
+            touch-action: pan-y;
+        }
+        .panorama-viewport:active {
+            cursor: grabbing;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.85; }
+            100% { transform: scale(2.1); opacity: 0; }
+        }
+        .hotspot-pulse::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 9999px;
+            border: 2px solid #C59B27;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F0EAE1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #967213;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-cream text-granite-dark font-sans antialiased selection:bg-vermilion selection:text-white">
+
+    <!-- Toast Notification Container (Replaces alert) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+    <!-- 1. STICKY HEADER & LANGUAGE SWITCHER -->
+    <header class="sticky top-0 z-40 bg-cream/95 backdrop-blur-md border-b border-bronze/30 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo & Title -->
+                <a href="#hero" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-vermilion flex items-center justify-center text-bronze-light shadow-md border border-bronze/50 group-hover:scale-105 transition-transform">
+                        <!-- Stylized Lotus / Mausoleum Emblem SVG -->
+                        <svg class="w-7 h-7" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 5L20.2 11.5H27L21.5 15.5L23.6 22L18 18L12.4 22L14.5 15.5L9 11.5H15.8L18 5Z" fill="#E2C05B"/>
+                            <rect x="6" y="25" width="24" height="3" rx="1" fill="#FAF7F2"/>
+                            <rect x="4" y="29" width="28" height="3" rx="1" fill="#E2C05B"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span id="nav-brand-title" class="block font-serif font-bold text-lg sm:text-xl text-vermilion leading-tight">
+                            Lăng Chủ Tịch Hồ Chí Minh
+                        </span>
+                        <span id="nav-brand-sub" class="block text-xs text-granite tracking-wider uppercase font-medium">
+                            Quần thể Di tích Ba Đình • Hà Nội
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-granite-dark">
+                    <a href="#hero" data-i18n="nav_overview" class="hover:text-vermilion transition-colors py-1 border-b-2 border-transparent hover:border-vermilion">Tổng quan</a>
+                    <a href="#virtual-tour" data-i18n="nav_tour" class="hover:text-vermilion transition-colors py-1 border-b-2 border-transparent hover:border-vermilion">Tham quan 360° & Không gian</a>
+                    <a href="#architecture" data-i18n="nav_arch" class="hover:text-vermilion transition-colors py-1 border-b-2 border-transparent hover:border-vermilion">Kiến trúc & Lịch sử</a>
+                    <a href="#visitor-guide" data-i18n="nav_guide" class="hover:text-vermilion transition-colors py-1 border-b-2 border-transparent hover:border-vermilion">Quy định & Giờ mở cửa</a>
+                    <a href="#guestbook" data-i18n="nav_guestbook" class="hover:text-vermilion transition-colors py-1 border-b-2 border-transparent hover:border-vermilion">Hỏi đáp & Lưu bút</a>
+                </nav>
+
+                <!-- Language Switcher & Mobile Menu Button -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-cream-dark p-1 rounded-full border border-bronze/40 flex items-center shadow-inner" role="group" aria-label="Language Switcher">
+                        <button id="btn-lang-vi" onclick="setLanguage('vi')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-vermilion text-white shadow-sm">
+                            VI
+                        </button>
+                        <button id="btn-lang-en" onclick="setLanguage('en')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all text-granite hover:text-vermilion">
+                            EN
+                        </button>
+                    </div>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-cream-dark text-granite-dark hover:bg-bronze/20 transition-colors" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-cream border-t border-bronze/20 px-4 pt-3 pb-5 space-y-2 shadow-lg">
+            <a href="#hero" onclick="closeMobileMenu()" data-i18n="nav_overview" class="block px-4 py-2.5 rounded-xl font-medium hover:bg-cream-dark text-granite-dark">Tổng quan</a>
+            <a href="#virtual-tour" onclick="closeMobileMenu()" data-i18n="nav_tour" class="block px-4 py-2.5 rounded-xl font-medium hover:bg-cream-dark text-granite-dark">Tham quan 360° & Không gian</a>
+            <a href="#architecture" onclick="closeMobileMenu()" data-i18n="nav_arch" class="block px-4 py-2.5 rounded-xl font-medium hover:bg-cream-dark text-granite-dark">Kiến trúc & Lịch sử</a>
+            <a href="#visitor-guide" onclick="closeMobileMenu()" data-i18n="nav_guide" class="block px-4 py-2.5 rounded-xl font-medium hover:bg-cream-dark text-granite-dark">Quy định & Giờ mở cửa</a>
+            <a href="#guestbook" onclick="closeMobileMenu()" data-i18n="nav_guestbook" class="block px-4 py-2.5 rounded-xl font-medium hover:bg-cream-dark text-granite-dark">Hỏi đáp & Lưu bút</a>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section id="hero" class="relative overflow-hidden bg-gradient-to-b from-granite-dark via-granite to-vermilion-dark text-cream">
+        <!-- Decorative Background Subtle Grid & Rays -->
+        <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(circle at 50% 25%, #E2C05B 0%, transparent 65%);"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                
+                <!-- Left Column: Solemn Introduction & Quote -->
+                <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-vermilion/80 border border-bronze/50 text-bronze-light text-xs sm:text-sm font-medium tracking-wide">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span data-i18n="hero_badge">DI TÍCH LỊCH SỬ QUỐC GIA ĐẶC BIỆT • HÀ NỘI</span>
+                    </div>
+
+                    <h1 data-i18n="hero_title" class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                        Lăng Chủ Tịch <span class="text-bronze-light block sm:inline">Hồ Chí Minh</span>
+                    </h1>
+
+                    <p data-i18n="hero_subtitle" class="text-base sm:text-lg text-cream/90 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Nơi an nghỉ vĩnh hằng của Vị Cha già kính yêu của dân tộc Việt Nam — biểu tượng thiêng liêng của lòng biết ơn, tinh thần độc lập tự do và kiến trúc hoa sen đài bất tử giữa lòng Thủ đô.
+                    </p>
+
+                    <!-- Famous Quote Box -->
+                    <blockquote class="p-5 rounded-2xl bg-black/25 border-l-4 border-bronze text-left backdrop-blur-sm">
+                        <p data-i18n="hero_quote" class="font-serif italic text-base sm:text-lg text-bronze-light mb-2">
+                            “Không có gì quý hơn độc lập, tự do.”
+                        </p>
+                        <footer data-i18n="hero_quote_author" class="text-xs sm:text-sm text-cream/80 font-medium">
+                            — Chủ tịch Hồ Chí Minh (1890 – 1969)
+                        </footer>
+                    </blockquote>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#virtual-tour" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-bronze hover:bg-bronze-light text-granite-dark font-bold text-sm sm:text-base shadow-lg shadow-black/30 transition-all flex items-center justify-center gap-2.5 group">
+                            <i class="fa-solid fa-vr-cardboard text-lg group-hover:scale-110 transition-transform"></i>
+                            <span data-i18n="hero_cta_primary">Bắt đầu tham quan giả lập</span>
+                        </a>
+                        <a href="#visitor-guide" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/25 font-semibold text-sm sm:text-base transition-all flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-clock"></i>
+                            <span data-i18n="hero_cta_secondary">Xem giờ mở cửa & Quy định</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Artistic Architectural SVG Illustration of Ho Chi Minh Mausoleum -->
+                <div class="lg:col-span-6">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-bronze/40 bg-gradient-to-b from-[#1a2634] via-[#2c3a47] to-[#233329] p-4 sm:p-6">
+                        <!-- Custom High-Detail Architectural Vector Art -->
+                        <svg viewBox="0 0 800 520" class="w-full h-auto rounded-2xl shadow-inner" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#1E3A5F"/>
+                                    <stop offset="55%" stop-color="#4A6B82"/>
+                                    <stop offset="100%" stop-color="#D9A760"/>
+                                </linearGradient>
+                                <linearGradient id="graniteMain" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#4B5563"/>
+                                    <stop offset="50%" stop-color="#6B7280"/>
+                                    <stop offset="100%" stop-color="#374151"/>
+                                </linearGradient>
+                                <linearGradient id="porphyryRed" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#7F1D1D"/>
+                                    <stop offset="100%" stop-color="#450A0A"/>
+                                </linearGradient>
+                                <linearGradient id="grassGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#2E5A36"/>
+                                    <stop offset="100%" stop-color="#1B3B22"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Dawn Sky -->
+                            <rect width="800" height="360" fill="url(#skyGrad)"/>
+                            <!-- Golden Morning Sun Glow -->
+                            <circle cx="400" cy="180" r="140" fill="#FDE68A" opacity="0.22"/>
+                            <circle cx="400" cy="180" r="85" fill="#FCD34D" opacity="0.28"/>
+
+                            <!-- Stylized Distant Trees -->
+                            <g fill="#1F3A28" opacity="0.85">
+                                <circle cx="90" cy="310" r="55"/>
+                                <circle cx="150" cy="320" r="45"/>
+                                <circle cx="650" cy="320" r="48"/>
+                                <circle cx="715" cy="305" r="60"/>
+                            </g>
+
+                            <!-- Bamboo Groves Flanking the Mausoleum -->
+                            <g stroke="#3F6212" stroke-width="3" opacity="0.9">
+                                <line x1="120" y1="340" x2="115" y2="220"/>
+                                <line x1="132" y1="340" x2="136" y2="210"/>
+                                <line x1="145" y1="340" x2="148" y2="230"/>
+                                <line x1="655" y1="340" x2="652" y2="225"/>
+                                <line x1="668" y1="340" x2="672" y2="212"/>
+                                <line x1="680" y1="340" x2="684" y2="235"/>
+                            </g>
+
+                            <!-- Tiered Lotus Roof Structure -->
+                            <!-- Top Tier -->
+                            <polygon points="210,130 590,130 570,112 230,112" fill="#374151"/>
+                            <rect x="200" y="130" width="400" height="16" fill="#4B5563"/>
+                            <!-- Frieze with Inscription -->
+                            <rect x="190" y="146" width="420" height="34" fill="url(#porphyryRed)"/>
+                            <text x="400" y="169" text-anchor="middle" fill="#F59E0B" font-family="serif" font-weight="bold" font-size="16" letter-spacing="3">
+                                CHỦ TỊCH HỒ - CHÍ - MINH
+                            </text>
+
+                            <!-- Main Colonnade (Square Granite Pillars) -->
+                            <rect x="205" y="180" width="390" height="115" fill="#1F2937"/>
+                            <!-- Pillars -->
+                            <g fill="url(#graniteMain)">
+                                <rect x="208" y="180" width="22" height="115"/>
+                                <rect x="248" y="180" width="22" height="115"/>
+                                <rect x="288" y="180" width="22" height="115"/>
+                                <rect x="328" y="180" width="22" height="115"/>
+                                <rect x="368" y="180" width="22" height="115"/>
+                                <rect x="410" y="180" width="22" height="115"/>
+                                <rect x="450" y="180" width="22" height="115"/>
+                                <rect x="490" y="180" width="22" height="115"/>
+                                <rect x="530" y="180" width="22" height="115"/>
+                                <rect x="570" y="180" width="22" height="115"/>
+                            </g>
+
+                            <!-- Central Sacred Entrance Portal -->
+                            <rect x="358" y="215" width="84" height="80" fill="#7F1D1D" stroke="#C59B27" stroke-width="2"/>
+                            <rect x="372" y="230" width="56" height="65" fill="#111827"/>
+
+                            <!-- Three-Tiered Pedestal & Tribunes (Lễ đài) -->
+                            <rect x="175" y="295" width="450" height="16" fill="#6B7280"/>
+                            <rect x="145" y="311" width="510" height="18" fill="#4B5563"/>
+                            <rect x="115" y="329" width="570" height="22" fill="#374151"/>
+                            <!-- Central Staircase -->
+                            <rect x="330" y="295" width="140" height="56" fill="#9CA3AF"/>
+                            <line x1="330" y1="306" x2="470" y2="306" stroke="#4B5563" stroke-width="2"/>
+                            <line x1="330" y1="317" x2="470" y2="317" stroke="#4B5563" stroke-width="2"/>
+                            <line x1="330" y1="328" x2="470" y2="328" stroke="#4B5563" stroke-width="2"/>
+                            <line x1="330" y1="339" x2="470" y2="339" stroke="#4B5563" stroke-width="2"/>
+
+                            <!-- Ba Dinh Square & 240 Grass Squares -->
+                            <rect x="0" y="351" width="800" height="169" fill="#D1D5DB"/>
+                            <!-- Central Stone Walkway -->
+                            <polygon points="340,351 460,351 520,520 280,520" fill="#E5E7EB"/>
+                            <!-- Left Grass Grid -->
+                            <g fill="url(#grassGrad)">
+                                <rect x="40" y="365" width="75" height="32" rx="3"/>
+                                <rect x="125" y="365" width="75" height="32" rx="3"/>
+                                <rect x="210" y="365" width="75" height="32" rx="3"/>
+                                <rect x="30" y="408" width="80" height="38" rx="3"/>
+                                <rect x="120" y="408" width="80" height="38" rx="3"/>
+                                <rect x="210" y="408" width="80" height="38" rx="3"/>
+                                <rect x="20" y="458" width="85" height="44" rx="3"/>
+                                <rect x="115" y="458" width="85" height="44" rx="3"/>
+                                <rect x="210" y="458" width="85" height="44" rx="3"/>
+                            </g>
+                            <!-- Right Grass Grid -->
+                            <g fill="url(#grassGrad)">
+                                <rect x="515" y="365" width="75" height="32" rx="3"/>
+                                <rect x="600" y="365" width="75" height="32" rx="3"/>
+                                <rect x="685" y="365" width="75" height="32" rx="3"/>
+                                <rect x="510" y="408" width="80" height="38" rx="3"/>
+                                <rect x="600" y="408" width="80" height="38" rx="3"/>
+                                <rect x="690" y="408" width="80" height="38" rx="3"/>
+                                <rect x="505" y="458" width="85" height="44" rx="3"/>
+                                <rect x="600" y="458" width="85" height="44" rx="3"/>
+                                <rect x="695" y="458" width="85" height="44" rx="3"/>
+                            </g>
+
+                            <!-- National Flagpole in Foreground Left -->
+                            <line x1="295" y1="355" x2="295" y2="215" stroke="#F3F4F6" stroke-width="3"/>
+                            <rect x="295" y="217" width="38" height="24" fill="#DC2626"/>
+                            <polygon points="314,222 316,227 321,227 317,230 318,235 314,232 310,235 311,230 307,227 312,227" fill="#FACC15"/>
+                        </svg>
+
+                        <!-- Caption Bar -->
+                        <div class="mt-3 flex items-center justify-between text-xs text-cream/80 px-1">
+                            <span data-i18n="hero_img_caption">Mô phỏng kiến trúc Lăng Bác & Quảng trường Ba Đình</span>
+                            <span class="text-bronze-light font-semibold">21.0368° N, 105.8347° E</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. INTERACTIVE VIRTUAL TOUR & BA DINH MAP -->
+    <section id="virtual-tour" class="py-16 sm:py-24 lotus-pattern border-b border-bronze/25">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Heading -->
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <span data-i18n="tour_tag" class="inline-block px-3.5 py-1 rounded-full bg-vermilion/10 text-vermilion font-bold text-xs uppercase tracking-wider">
+                    TRẢI NGHIỆM KHÔNG GIAN SỐ
+                </span>
+                <h2 data-i18n="tour_title" class="font-serif text-3xl sm:text-4xl font-bold text-granite-dark">
+                    Tham Quan Giả Lập & Bản Đồ Quần Thể Ba Đình
+                </h2>
+                <p data-i18n="tour_desc" class="text-granite text-sm sm:text-base">
+                    Chọn từng điểm dừng trên sơ đồ quần thể di tích để khám phá không gian 360° tương tác, đọc thông tin chi tiết và nghe thuyết minh tự động bằng giọng nói.
+                </p>
+            </div>
+
+            <!-- Main Interactive Tour Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left (5 cols): Interactive Ba Dinh Complex Map -->
+                <div class="lg:col-span-5 bg-white rounded-3xl p-5 sm:p-6 shadow-xl border border-bronze/30">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 data-i18n="map_heading" class="font-serif font-bold text-lg text-granite-dark flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-vermilion"></i>
+                            <span>Sơ đồ Quần thể Di tích</span>
+                        </h3>
+                        <span data-i18n="map_hint" class="text-xs bg-cream-dark text-granite px-2.5 py-1 rounded-full font-medium">
+                            Chạm điểm dừng
+                        </span>
+                    </div>
+
+                    <!-- Interactive SVG Masterplan Map -->
+                    <div class="relative rounded-2xl overflow-hidden bg-[#E9EFE6] border border-granite/15 aspect-[4/3]">
+                        <svg viewBox="0 0 400 320" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Roads: Hung Vuong, Doc Lap, Chua Mot Cot -->
+                            <rect x="195" y="0" width="22" height="320" fill="#D1D5DB"/> <!-- Hung Vuong St -->
+                            <rect x="0" y="235" width="400" height="18" fill="#D1D5DB"/> <!-- Chua Mot Cot St -->
+                            
+                            <!-- Ba Dinh Square Lawns (Right of Hung Vuong St) -->
+                            <rect x="230" y="55" width="145" height="165" rx="8" fill="#86EFAC" opacity="0.55" stroke="#22C55E" stroke-dasharray="4 3"/>
+                            <text x="302" y="142" text-anchor="middle" fill="#166534" font-size="10" font-weight="bold" opacity="0.75">BA ĐÌNH SQUARE</text>
+
+                            <!-- Presidential Palace Garden & Fish Pond (Top Left) -->
+                            <rect x="25" y="20" width="155" height="95" rx="12" fill="#BBF7D0" opacity="0.7"/>
+                            <!-- Fish Pond -->
+                            <ellipse cx="95" cy="68" rx="38" ry="20" fill="#38BDF8" opacity="0.75" stroke="#0284C7" stroke-width="1.5"/>
+
+                            <!-- Mausoleum Footprint (Middle Left) -->
+                            <rect x="105" y="132" width="75" height="68" rx="6" fill="#9CA3AF" stroke="#374151" stroke-width="2"/>
+                            <rect x="120" y="145" width="45" height="42" rx="3" fill="#7F1D1D"/>
+
+                            <!-- One Pillar Pagoda Lotus Pond (Bottom Left) -->
+                            <circle cx="85" cy="278" r="24" fill="#7DD3FC" stroke="#0284C7" stroke-width="1.5"/>
+                            <rect x="77" y="270" width="16" height="16" rx="2" fill="#B45309"/>
+
+                            <!-- Ho Chi Minh Museum (Bottom Right-Center) -->
+                            <polygon points="150,262 215,262 225,305 140,305" fill="#FDE68A" stroke="#D97706" stroke-width="1.5"/>
+
+                            <!-- Suggested Tour Path Dashed Line -->
+                            <path d="M 300 135 Q 220 135 145 165 T 95 68 T 85 278 T 182 284" fill="none" stroke="#8B1E1E" stroke-width="2" stroke-dasharray="5 4" opacity="0.65"/>
+                        </svg>
+
+                        <!-- Interactive HTML Hotspot Pins Overlaid -->
+                        <!-- 1. Ba Dinh Square -->
+                        <button onclick="selectSpot('square')" id="pin-square" style="top: 38%; left: 74%;" class="hotspot-btn absolute -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-vermilion text-white font-bold text-xs flex items-center justify-center shadow-lg border-2 border-white transition-transform hover:scale-110 z-10" title="Quảng trường Ba Đình">
+                            1
+                        </button>
+                        <!-- 2. Mausoleum -->
+                        <button onclick="selectSpot('mausoleum')" id="pin-mausoleum" style="top: 51%; left: 36%;" class="hotspot-btn hotspot-pulse absolute -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-bronze text-granite-dark font-bold text-sm flex items-center justify-center shadow-xl border-2 border-white transition-transform hover:scale-110 z-20" title="Lăng Chủ tịch Hồ Chí Minh">
+                            2
+                        </button>
+                        <!-- 3. Stilt House & Fish Pond -->
+                        <button onclick="selectSpot('stilt_house')" id="pin-stilt_house" style="top: 21%; left: 24%;" class="hotspot-btn absolute -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-vermilion text-white font-bold text-xs flex items-center justify-center shadow-lg border-2 border-white transition-transform hover:scale-110 z-10" title="Nhà sàn Bác Hồ & Ao cá">
+                            3
+                        </button>
+                        <!-- 4. One Pillar Pagoda -->
+                        <button onclick="selectSpot('pagoda')" id="pin-pagoda" style="top: 86%; left: 21%;" class="hotspot-btn absolute -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-vermilion text-white font-bold text-xs flex items-center justify-center shadow-lg border-2 border-white transition-transform hover:scale-110 z-10" title="Chùa Một Cột">
+                            4
+                        </button>
+                        <!-- 5. Ho Chi Minh Museum -->
+                        <button onclick="selectSpot('museum')" id="pin-museum" style="top: 88%; left: 46%;" class="hotspot-btn absolute -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-vermilion text-white font-bold text-xs flex items-center justify-center shadow-lg border-2 border-white transition-transform hover:scale-110 z-10" title="Bảo tàng Hồ Chí Minh">
+                            5
+                        </button>
+                    </div>
+
+                    <!-- Spot Selector List Pills -->
+                    <div id="spot-list" class="mt-5 space-y-2">
+                        <!-- Dynamically rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- Right (7 cols): Simulated 360° Panorama & Audio Guide Card -->
+                <div class="lg:col-span-7 bg-white rounded-3xl overflow-hidden shadow-xl border border-bronze/30 flex flex-col">
+                    <!-- Simulated 360° Interactive Viewer -->
+                    <div id="panorama-container" class="panorama-viewport relative h-72 sm:h-96 bg-granite-dark overflow-hidden">
+                        <!-- Panoramic Dynamic Scene SVG Canvas -->
+                        <div id="panorama-canvas" class="w-[180%] h-full transition-transform duration-75 ease-out" style="transform: translateX(-22%);">
+                            <!-- Injected dynamically based on selected spot -->
+                        </div>
+
+                        <!-- Top Overlay Controls -->
+                        <div class="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+                            <span class="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-semibold flex items-center gap-2 border border-white/20">
+                                <i class="fa-solid fa-compass text-bronze-light animate-spin" style="animation-duration: 12s;"></i>
+                                <span data-i18n="pano_badge">Góc nhìn 360° mô phỏng</span>
+                            </span>
+                            <span id="pano-angle-indicator" class="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-bronze-light text-xs font-mono border border-white/20">
+                                0° N
+                            </span>
+                        </div>
+
+                        <!-- Bottom Drag Instruction & Pan Buttons -->
+                        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                            <button onclick="panPanorama(-40)" class="w-10 h-10 rounded-full bg-black/60 hover:bg-vermilion text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-colors" aria-label="Pan Left">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <span data-i18n="pano_drag_hint" class="px-4 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white/90 text-xs font-medium pointer-events-none">
+                                <i class="fa-solid fa-arrows-left-right mr-1.5 text-bronze-light"></i>Kéo ngang hoặc bấm mũi tên để xoay góc nhìn
+                            </span>
+                            <button onclick="panPanorama(40)" class="w-10 h-10 rounded-full bg-black/60 hover:bg-vermilion text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-colors" aria-label="Pan Right">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Spot Detail Content & Audio Narration -->
+                    <div class="p-6 sm:p-8 space-y-5 flex-1">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cream-dark pb-4">
+                            <div>
+                                <span id="spot-category" class="text-xs font-bold uppercase tracking-wider text-vermilion block mb-1">
+                                    Điểm dừng #2 • Trung tâm Quần thể
+                                </span>
+                                <h3 id="spot-title" class="font-serif text-2xl sm:text-3xl font-bold text-granite-dark">
+                                    Lăng Chủ tịch Hồ Chí Minh
+                                </h3>
+                            </div>
+
+                            <!-- Web Speech API Narration Button -->
+                            <button id="btn-audio-guide" onclick="toggleAudioNarration()" class="px-5 py-3 rounded-2xl bg-vermilion hover:bg-vermilion-dark text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2.5 shrink-0">
+                                <i id="audio-icon" class="fa-solid fa-volume-high"></i>
+                                <span id="audio-btn-text">Nghe thuyết minh</span>
+                            </button>
+                        </div>
+
+                        <p id="spot-description" class="text-granite leading-relaxed text-sm sm:text-base">
+                            Lăng Chủ tịch Hồ Chí Minh được khởi công ngày 2/9/1973 và khánh thành ngày 29/8/1975. Công trình cao 21,6 mét, rộng 41,2 mét, mang hình tượng đài hoa sen cách điệu kết hợp kiến trúc cổ truyền Việt Nam và phong cách hiện đại trang nghiêm.
+                        </p>
+
+                        <!-- Key Highlights Grid -->
+                        <div id="spot-highlights" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. ARCHITECTURE, HISTORY & IMPRESSIVE NUMBERS -->
+    <section id="architecture" class="py-16 sm:py-24 bg-white border-b border-bronze/25">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+            
+            <!-- Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span data-i18n="arch_tag" class="inline-block px-3.5 py-1 rounded-full bg-bronze/15 text-bronze-dark font-bold text-xs uppercase tracking-wider">
+                    DI SẢN KIẾN TRÚC & LỊCH SỬ
+                </span>
+                <h2 data-i18n="arch_title" class="font-serif text-3xl sm:text-4xl font-bold text-granite-dark">
+                    Dấu Ấn Lịch Sử & Tinh Hoa Vật Liệu Việt Nam
+                </h2>
+                <p data-i18n="arch_desc" class="text-granite text-sm sm:text-base">
+                    Công trình là kết tinh tình cảm thiêng liêng của đồng bào cả nước và bạn bè quốc tế, hội tụ những vật liệu quý giá từ khắp mọi miền Tổ quốc.
+                </p>
+            </div>
+
+            <!-- Impressive Numbers Counter Strip -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div class="p-6 rounded-3xl bg-cream border border-bronze/30 text-center shadow-sm">
+                    <div class="font-serif text-3xl sm:text-4xl font-bold text-vermilion mb-1">21,6 m</div>
+                    <div data-i18n="stat_height" class="text-xs sm:text-sm font-semibold text-granite-dark">Chiều cao công trình</div>
+                </div>
+                <div class="p-6 rounded-3xl bg-cream border border-bronze/30 text-center shadow-sm">
+                    <div class="font-serif text-3xl sm:text-4xl font-bold text-vermilion mb-1">240</div>
+                    <div data-i18n="stat_lawns" class="text-xs sm:text-sm font-semibold text-granite-dark">Ô cỏ xanh Quảng trường</div>
+                </div>
+                <div class="p-6 rounded-3xl bg-cream border border-bronze/30 text-center shadow-sm">
+                    <div class="font-serif text-3xl sm:text-4xl font-bold text-vermilion mb-1">250+</div>
+                    <div data-i18n="stat_trees" class="text-xs sm:text-sm font-semibold text-granite-dark">Loài thực vật quý khắp cả nước</div>
+                </div>
+                <div class="p-6 rounded-3xl bg-cream border border-bronze/30 text-center shadow-sm">
+                    <div class="font-serif text-3xl sm:text-4xl font-bold text-vermilion mb-1">29/8/1975</div>
+                    <div data-i18n="stat_inauguration" class="text-xs sm:text-sm font-semibold text-granite-dark">Ngày khánh thành Lăng</div>
+                </div>
+            </div>
+
+            <!-- Interactive Historical Timeline -->
+            <div class="bg-cream rounded-3xl p-6 sm:p-10 border border-bronze/30 shadow-inner">
+                <h3 data-i18n="timeline_heading" class="font-serif text-2xl font-bold text-granite-dark mb-6 flex items-center gap-2.5">
+                    <i class="fa-solid fa-clock-rotate-left text-vermilion"></i>
+                    <span>Dòng Chảy Lịch Sử Ba Đình</span>
+                </h3>
+
+                <!-- Timeline Tabs -->
+                <div class="flex flex-wrap gap-2 sm:gap-3 mb-6">
+                    <button onclick="selectTimeline(0)" id="tl-btn-0" class="tl-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-vermilion text-white shadow-md">
+                        02/09/1945
+                    </button>
+                    <button onclick="selectTimeline(1)" id="tl-btn-1" class="tl-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-granite-dark hover:bg-bronze/20 border border-bronze/30">
+                        02/09/1969
+                    </button>
+                    <button onclick="selectTimeline(2)" id="tl-btn-2" class="tl-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-granite-dark hover:bg-bronze/20 border border-bronze/30">
+                        02/09/1973
+                    </button>
+                    <button onclick="selectTimeline(3)" id="tl-btn-3" class="tl-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-granite-dark hover:bg-bronze/20 border border-bronze/30">
+                        29/08/1975
+                    </button>
+                </div>
+
+                <!-- Timeline Active Content Card -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-bronze/20 shadow-sm grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-3 text-center md:text-left border-b md:border-b-0 md:border-r border-cream-dark pb-4 md:pb-0">
+                        <span id="tl-year" class="font-serif text-3xl sm:text-4xl font-bold text-bronze-dark block">1945</span>
+                        <span id="tl-date" class="text-xs font-semibold uppercase tracking-wider text-vermilion">Ngày 2 tháng 9</span>
+                    </div>
+                    <div class="md:col-span-9 space-y-2">
+                        <h4 id="tl-title" class="font-serif text-xl sm:text-2xl font-bold text-granite-dark">
+                            Tuyên ngôn Độc lập khai sinh nước Việt Nam Dân chủ Cộng hòa
+                        </h4>
+                        <p id="tl-text" class="text-granite text-sm sm:text-base leading-relaxed">
+                            Tại Quảng trường Ba Đình lịch sử, Chủ tịch Hồ Chí Minh đã đọc bản Tuyên ngôn Độc lập bất hủ trước hàng chục vạn đồng bào, mở ra kỷ nguyên độc lập, tự do cho dân tộc Việt Nam.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Materials & Architecture Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Card 1: Granite -->
+                <div class="rounded-3xl p-7 bg-granite-dark text-cream shadow-lg border border-bronze/30 flex flex-col justify-between space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-bronze/20 text-bronze-light flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 data-i18n="mat_granite_title" class="font-serif text-xl font-bold text-white">Đá Hoa Cương & Đá Ngọc</h4>
+                        <p data-i18n="mat_granite_desc" class="text-sm text-cream/85 leading-relaxed">
+                            Lớp vỏ ngoài ốp đá hoa cương xám bền vững khai thác từ vùng núi Bình Định, Thanh Hóa và Nghệ An; mặt tiền ốp đá ngọc đỏ thẫm tạo sắc thái trang nghiêm, trường tồn.
+                        </p>
+                    </div>
+                    <div data-i18n="mat_granite_loc" class="text-xs text-bronze-light font-semibold pt-2 border-t border-white/10">
+                        Nguồn gốc: Bình Định • Thanh Hóa • Nghệ An
+                    </div>
+                </div>
+
+                <!-- Card 2: Precious Wood -->
+                <div class="rounded-3xl p-7 bg-vermilion-dark text-cream shadow-lg border border-bronze/30 flex flex-col justify-between space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-bronze/20 text-bronze-light flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 data-i18n="mat_wood_title" class="font-serif text-xl font-bold text-white">Gỗ Quý Đại Ngàn Tây Nguyên</h4>
+                        <p data-i18n="mat_wood_desc" class="text-sm text-cream/85 leading-relaxed">
+                            Hệ thống cửa, trần và nội thất bên trong sử dụng các loại gỗ quý hiếm như giáng hương, pơ-mu, gụ, trắc được đồng bào Tây Nguyên và miền Nam gửi tặng.
+                        </p>
+                    </div>
+                    <div data-i18n="mat_wood_loc" class="text-xs text-bronze-light font-semibold pt-2 border-t border-white/10">
+                        Nguồn gốc: Tây Nguyên • Trường Sơn
+                    </div>
+                </div>
+
+                <!-- Card 3: Botanical Garden -->
+                <div class="rounded-3xl p-7 bg-[#233D2B] text-cream shadow-lg border border-bronze/30 flex flex-col justify-between space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-bronze/20 text-bronze-light flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 data-i18n="mat_flora_title" class="font-serif text-xl font-bold text-white">Vườn Cây Khắp Mọi Miền Tổ Quốc</h4>
+                        <p data-i18n="mat_flora_desc" class="text-sm text-cream/85 leading-relaxed">
+                            Hai rặng tre ngà từ Cao Bằng, Thanh Hóa cùng hơn 250 loài cây đặc trưng như hoa ban Tây Bắc, vú sữa miền Nam, chò nâu Đền Hùng tỏa bóng quanh Lăng.
+                        </p>
+                    </div>
+                    <div data-i18n="mat_flora_loc" class="text-xs text-bronze-light font-semibold pt-2 border-t border-white/10">
+                        Nguồn gốc: 63 Tỉnh thành cả nước
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. VISITOR GUIDE & INTERACTIVE DRESS/SCHEDULE CHECKER -->
+    <section id="visitor-guide" class="py-16 sm:py-24 lotus-pattern border-b border-bronze/25">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <span data-i18n="guide_tag" class="inline-block px-3.5 py-1 rounded-full bg-vermilion/10 text-vermilion font-bold text-xs uppercase tracking-wider">
+                    CẨM NANG VIẾNG LĂNG BÁC
+                </span>
+                <h2 data-i18n="guide_title" class="font-serif text-3xl sm:text-4xl font-bold text-granite-dark">
+                    Giờ Mở Cửa & Giả Lập Kiểm Tra Chuẩn Bị
+                </h2>
+                <p data-i18n="guide_desc" class="text-granite text-sm sm:text-base">
+                    Nắm rõ thời gian tổ chức lễ viếng theo mùa và thử kiểm tra trang phục, hành lý của bạn trước khi bước vào khu vực Lăng trang nghiêm.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left (5 cols): Seasonal Opening Hours -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-bronze/30 space-y-5">
+                        <h3 data-i18n="hours_heading" class="font-serif text-2xl font-bold text-granite-dark flex items-center gap-2.5">
+                            <i class="fa-regular fa-calendar-check text-vermilion"></i>
+                            <span>Lịch Tổ Chức Lễ Viếng</span>
+                        </h3>
+
+                        <!-- Hot Season -->
+                        <div class="p-4 rounded-2xl bg-cream border-l-4 border-vermilion space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span data-i18n="season_hot" class="font-bold text-vermilion text-sm">Mùa nóng (01/04 – 31/10)</span>
+                                <span class="text-xs px-2.5 py-0.5 rounded-full bg-vermilion/10 text-vermilion font-semibold">Summer</span>
+                            </div>
+                            <p data-i18n="season_hot_time" class="text-sm text-granite-dark">
+                                • Thứ 3, Thứ 4, Thứ 5: <strong>07:30 – 10:30</strong><br>
+                                • Thứ 7, Chủ nhật & Ngày lễ: <strong>07:30 – 11:00</strong>
+                            </p>
+                        </div>
+
+                        <!-- Cold Season -->
+                        <div class="p-4 rounded-2xl bg-cream border-l-4 border-bronze space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span data-i18n="season_cold" class="font-bold text-bronze-dark text-sm">Mùa lạnh (01/11 – 31/03)</span>
+                                <span class="text-xs px-2.5 py-0.5 rounded-full bg-bronze/20 text-bronze-dark font-semibold">Winter</span>
+                            </div>
+                            <p data-i18n="season_cold_time" class="text-sm text-granite-dark">
+                                • Thứ 3, Thứ 4, Thứ 5: <strong>08:00 – 11:00</strong><br>
+                                • Thứ 7, Chủ nhật & Ngày lễ: <strong>08:00 – 11:30</strong>
+                            </p>
+                        </div>
+
+                        <!-- Important Notes -->
+                        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 space-y-1.5">
+                            <div class="font-bold flex items-center gap-1.5 text-amber-800">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <span data-i18n="hours_note_title">Lưu ý quan trọng:</span>
+                            </div>
+                            <p data-i18n="hours_note_body">
+                                • Lăng <strong>không tổ chức lễ viếng vào Thứ 2 và Thứ 6</strong> hàng tuần (trừ ngày 19/5, 2/9 và Mùng 1 Tết).<br>
+                                • Lễ Thượng cờ diễn ra lúc <strong>06:00</strong> sáng và Lễ Hạ cờ lúc <strong>21:00</strong> tối hàng ngày tại Quảng trường Ba Đình.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right (7 cols): Interactive Preparation Simulator -->
+                <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-bronze/30 space-y-6">
+                    <div class="flex items-center justify-between border-b border-cream-dark pb-4">
+                        <div>
+                            <span data-i18n="sim_badge" class="text-xs font-bold uppercase tracking-wider text-bronze-dark">BỘ KIỂM TRA TƯƠNG TÁC</span>
+                            <h3 data-i18n="sim_heading" class="font-serif text-2xl font-bold text-granite-dark">
+                                Chuẩn Bị Trước Khi Vào Lăng
+                            </h3>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-cream flex items-center justify-center text-vermilion text-xl border border-bronze/30">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- 1. Dress Code -->
+                        <div class="space-y-2">
+                            <label data-i18n="sim_lbl_outfit" class="block text-xs font-bold uppercase text-granite">1. Trang phục của bạn</label>
+                            <select id="sim-outfit" onchange="evaluatePreparation()" class="w-full p-3 rounded-xl bg-cream border border-bronze/40 text-sm font-medium text-granite-dark focus:outline-none focus:ring-2 focus:ring-vermilion">
+                                <option value="formal" data-i18n="opt_outfit_formal">Áo sơ mi / Áo dài / Quần dài lịch sự</option>
+                                <option value="casual_ok" data-i18n="opt_outfit_casual">Áo phông có cổ & Quần jeans dài</option>
+                                <option value="shorts" data-i18n="opt_outfit_shorts">Quần đùi / Váy ngắn trên gối / Áo sát nách</option>
+                            </select>
+                        </div>
+
+                        <!-- 2. Belongings -->
+                        <div class="space-y-2">
+                            <label data-i18n="sim_lbl_items" class="block text-xs font-bold uppercase text-granite">2. Vật dụng mang theo</label>
+                            <select id="sim-items" onchange="evaluatePreparation()" class="w-full p-3 rounded-xl bg-cream border border-bronze/40 text-sm font-medium text-granite-dark focus:outline-none focus:ring-2 focus:ring-vermilion">
+                                <option value="light" data-i18n="opt_item_light">Chỉ mang ví nhỏ & điện thoại tắt chuông</option>
+                                <option value="bag_camera" data-i18n="opt_item_bag">Balo lớn, máy ảnh chuyên nghiệp, đồ ăn</option>
+                                <option value="liquid" data-i18n="opt_item_liquid">Chai nước lớn, vật dụng kim loại sắc nhọn</option>
+                            </select>
+                        </div>
+
+                        <!-- 3. Planned Day -->
+                        <div class="space-y-2">
+                            <label data-i18n="sim_lbl_day" class="block text-xs font-bold uppercase text-granite">3. Ngày dự kiến đi</label>
+                            <select id="sim-day" onchange="evaluatePreparation()" class="w-full p-3 rounded-xl bg-cream border border-bronze/40 text-sm font-medium text-granite-dark focus:outline-none focus:ring-2 focus:ring-vermilion">
+                                <option value="valid_day" data-i18n="opt_day_valid">Thứ 3, 4, 5 hoặc Cuối tuần (Sáng)</option>
+                                <option value="mon_fri" data-i18n="opt_day_monfri">Thứ 2 hoặc Thứ 6 (Ngày thường)</option>
+                                <option value="afternoon" data-i18n="opt_day_afternoon">Buổi chiều (14:00 – 16:00)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Evaluation Result Box -->
+                    <div id="sim-result-box" class="p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-500/40 transition-all">
+                        <!-- Dynamically populated by evaluatePreparation() -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. FAQ & INTERACTIVE GUESTBOOK -->
+    <section id="guestbook" class="py-16 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                
+                <!-- Left (5 cols): Interactive FAQ Accordion -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <span data-i18n="faq_tag" class="inline-block px-3.5 py-1 rounded-full bg-bronze/15 text-bronze-dark font-bold text-xs uppercase tracking-wider mb-2">
+                            GIẢI ĐÁP THẮC MẮC
+                        </span>
+                        <h2 data-i18n="faq_title" class="font-serif text-3xl font-bold text-granite-dark">
+                            Câu Hỏi Thường Gặp
+                        </h2>
+                    </div>
+
+                    <div id="faq-accordion" class="space-y-3">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- Right (7 cols): Interactive Visitor Guestbook -->
+                <div class="lg:col-span-7 bg-cream rounded-3xl p-6 sm:p-8 border border-bronze/30 shadow-md space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span data-i18n="gb_tag" class="text-xs font-bold uppercase tracking-wider text-vermilion">SỔ LƯU BÚT ĐIỆN TỬ</span>
+                            <h2 data-i18n="gb_title" class="font-serif text-2xl sm:text-3xl font-bold text-granite-dark">
+                                Cảm Tưởng Dâng Bác
+                            </h2>
+                        </div>
+                        <i class="fa-solid fa-feather-pointed text-2xl text-bronze-dark"></i>
+                    </div>
+
+                    <!-- Guestbook Form -->
+                    <form onsubmit="submitGuestbook(event)" class="bg-white p-5 rounded-2xl border border-bronze/25 space-y-4 shadow-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label data-i18n="gb_lbl_name" class="block text-xs font-bold text-granite mb-1">Họ tên / Đoàn khách</label>
+                                <input type="text" id="gb-name" required placeholder="VD: Nguyễn Minh Anh • Hà Nội" class="w-full px-3.5 py-2.5 rounded-xl bg-cream border border-bronze/30 text-sm focus:outline-none focus:ring-2 focus:ring-vermilion">
+                            </div>
+                            <div>
+                                <label data-i18n="gb_lbl_preset" class="block text-xs font-bold text-granite mb-1">Chọn nhanh lời cảm tưởng mẫu</label>
+                                <select id="gb-preset" onchange="applyPresetMessage()" class="w-full px-3.5 py-2.5 rounded-xl bg-cream border border-bronze/30 text-sm focus:outline-none focus:ring-2 focus:ring-vermilion">
+                                    <!-- Populated via JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label data-i18n="gb_lbl_msg" class="block text-xs font-bold text-granite mb-1">Nội dung lưu bút</label>
+                            <textarea id="gb-message" rows="3" required placeholder="Viết dòng cảm tưởng trang trọng của bạn..." class="w-full px-3.5 py-2.5 rounded-xl bg-cream border border-bronze/30 text-sm focus:outline-none focus:ring-2 focus:ring-vermilion"></textarea>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" class="px-6 py-3 rounded-xl bg-vermilion hover:bg-vermilion-dark text-white font-bold text-sm shadow transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span data-i18n="gb_btn_submit">Ghi vào Sổ lưu bút</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Guestbook Entries Feed -->
+                    <div id="guestbook-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-granite-dark text-cream/80 py-12 border-t-4 border-bronze">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div class="space-y-1">
+                <div data-i18n="footer_title" class="font-serif text-xl font-bold text-white">
+                    Lăng Chủ Tịch Hồ Chí Minh • Quần thể Di tích Ba Đình
+                </div>
+                <p data-i18n="footer_address" class="text-xs sm:text-sm text-cream/70">
+                    Số 2 Hùng Vương, Điện Biên, Ba Đình, Hà Nội, Việt Nam
+                </p>
+            </div>
+            <div class="text-xs text-cream/60 max-w-md">
+                <p data-i18n="footer_disclaimer">
+                    Trang web giả lập tương tác phục vụ mục đích giáo dục, giới thiệu văn hóa & du lịch di sản lịch sử Việt Nam.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- APPLICATION LOGIC & BILINGUAL DICTIONARY -->
+    <script>
+        let currentLang = 'vi';
+        let currentSpotId = 'mausoleum';
+        let currentTimelineIdx = 0;
+        let isSpeaking = false;
+        let panoOffset = -22; // percentage offset for simulated 360 view
+
+        // Comprehensive Bilingual Content Store
+        const i18n = {
+            vi: {
+                brand_title: "Lăng Chủ Tịch Hồ Chí Minh",
+                brand_sub: "Quần thể Di tích Ba Đình • Hà Nội",
+                nav_overview: "Tổng quan",
+                nav_tour: "Tham quan 360° & Không gian",
+                nav_arch: "Kiến trúc & Lịch sử",
+                nav_guide: "Quy định & Giờ mở cửa",
+                nav_guestbook: "Hỏi đáp & Lưu bút",
+
+                hero_badge: "DI TÍCH LỊCH SỬ QUỐC GIA ĐẶC BIỆT • HÀ NỘI",
+                hero_title: 'Lăng Chủ Tịch <span class="text-bronze-light block sm:inline">Hồ Chí Minh</span>',
+                hero_subtitle: "Nơi an nghỉ vĩnh hằng của Vị Cha già kính yêu của dân tộc Việt Nam — biểu tượng thiêng liêng của lòng biết ơn, tinh thần độc lập tự do và kiến trúc hoa sen đài bất tử giữa lòng Thủ đô.",
+                hero_quote: "“Không có gì quý hơn độc lập, tự do.”",
+                hero_quote_author: "— Chủ tịch Hồ Chí Minh (1890 – 1969)",
+                hero_cta_primary: "Bắt đầu tham quan giả lập",
+                hero_cta_secondary: "Xem giờ mở cửa & Quy định",
+                hero_img_caption: "Mô phỏng kiến trúc Lăng Bác & Quảng trường Ba Đình",
+
+                tour_tag: "TRẢI NGHIỆM KHÔNG GIAN SỐ",
+                tour_title: "Tham Quan Giả Lập & Bản Đồ Quần Thể Ba Đình",
+                tour_desc: "Chọn từng điểm dừng trên sơ đồ quần thể di tích để khám phá không gian 360° tương tác, đọc thông tin chi tiết và nghe thuyết minh tự động bằng giọng nói.",
+                map_heading: "Sơ đồ Quần thể Di tích",
+                map_hint: "Chạm điểm dừng",
+                pano_badge: "Góc nhìn 360° mô phỏng",
+                pano_drag_hint: "Kéo ngang hoặc bấm mũi tên để xoay góc nhìn",
+                audio_play: "Nghe thuyết minh",
+                audio_stop: "Dừng thuyết minh",
+
+                arch_tag: "DI SẢN KIẾN TRÚC & LỊCH SỬ",
+                arch_title: "Dấu Ấn Lịch Sử & Tinh Hoa Vật Liệu Việt Nam",
+                arch_desc: "Công trình là kết tinh tình cảm thiêng liêng của đồng bào cả nước và bạn bè quốc tế, hội tụ những vật liệu quý giá từ khắp mọi miền Tổ quốc.",
+                stat_height: "Chiều cao công trình",
+                stat_lawns: "Ô cỏ xanh Quảng trường",
+                stat_trees: "Loài thực vật quý khắp cả nước",
+                stat_inauguration: "Ngày khánh thành Lăng",
+                timeline_heading: "Dòng Chảy Lịch Sử Ba Đình",
+
+                mat_granite_title: "Đá Hoa Cương & Đá Ngọc",
+                mat_granite_desc: "Lớp vỏ ngoài ốp đá hoa cương xám bền vững khai thác từ vùng núi Bình Định, Thanh Hóa và Nghệ An; mặt tiền ốp đá ngọc đỏ thẫm tạo sắc thái trang nghiêm, trường tồn.",
+                mat_granite_loc: "Nguồn gốc: Bình Định • Thanh Hóa • Nghệ An",
+                mat_wood_title: "Gỗ Quý Đại Ngàn Tây Nguyên",
+                mat_wood_desc: "Hệ thống cửa, trần và nội thất bên trong sử dụng các loại gỗ quý hiếm như giáng hương, pơ-mu, gụ, trắc được đồng bào Tây Nguyên và miền Nam gửi tặng.",
+                mat_wood_loc: "Nguồn gốc: Tây Nguyên • Trường Sơn",
+                mat_flora_title: "Vườn Cây Khắp Mọi Miền Tổ Quốc",
+                mat_flora_desc: "Hai rặng tre ngà từ Cao Bằng, Thanh Hóa cùng hơn 250 loài cây đặc trưng như hoa ban Tây Bắc, vú sữa miền Nam, chò nâu Đền Hùng tỏa bóng quanh Lăng.",
+                mat_flora_loc: "Nguồn gốc: 63 Tỉnh thành cả nước",
+
+                guide_tag: "CẨM NANG VIẾNG LĂNG BÁC",
+                guide_title: "Giờ Mở Cửa & Giả Lập Kiểm Tra Chuẩn Bị",
+                guide_desc: "Nắm rõ thời gian tổ chức lễ viếng theo mùa và thử kiểm tra trang phục, hành lý của bạn trước khi bước vào khu vực Lăng trang nghiêm.",
+                hours_heading: "Lịch Tổ Chức Lễ Viếng",
+                season_hot: "Mùa nóng (01/04 – 31/10)",
+                season_hot_time: "• Thứ 3, Thứ 4, Thứ 5: <strong>07:30 – 10:30</strong><br>• Thứ 7, Chủ nhật & Ngày lễ: <strong>07:30 – 11:00</strong>",
+                season_cold: "Mùa lạnh (01/11 – 31/03)",
+                season_cold_time: "• Thứ 3, Thứ 4, Thứ 5: <strong>08:00 – 11:00</strong><br>• Thứ 7, Chủ nhật & Ngày lễ: <strong>08:00 – 11:30</strong>",
+                hours_note_title: "Lưu ý quan trọng:",
+                hours_note_body: "• Lăng <strong>không tổ chức lễ viếng vào Thứ 2 và Thứ 6</strong> hàng tuần (trừ ngày 19/5, 2/9 và Mùng 1 Tết).<br>• Lễ Thượng cờ diễn ra lúc <strong>06:00</strong> sáng và Lễ Hạ cờ lúc <strong>21:00</strong> tối hàng ngày tại Quảng trường Ba Đình.",
+
+                sim_badge: "BỘ KIỂM TRA TƯƠNG TÁC",
+                sim_heading: "Chuẩn Bị Trước Khi Vào Lăng",
+                sim_lbl_outfit: "1. Trang phục của bạn",
+                opt_outfit_formal: "Áo sơ mi / Áo dài / Quần dài lịch sự",
+                opt_outfit_casual: "Áo phông có cổ & Quần jeans dài",
+                opt_outfit_shorts: "Quần đùi / Váy ngắn trên gối / Áo sát nách",
+                sim_lbl_items: "2. Vật dụng mang theo",
+                opt_item_light: "Chỉ mang ví nhỏ & điện thoại tắt chuông",
+                opt_item_bag: "Balo lớn, máy ảnh chuyên nghiệp, đồ ăn",
+                opt_item_liquid: "Chai nước lớn, vật dụng kim loại sắc nhọn",
+                sim_lbl_day: "3. Ngày dự kiến đi",
+                opt_day_valid: "Thứ 3, 4, 5 hoặc Cuối tuần (Sáng)",
+                opt_day_monfri: "Thứ 2 hoặc Thứ 6 (Ngày thường)",
+                opt_day_afternoon: "Buổi chiều (14:00 – 16:00)",
+
+                faq_tag: "GIẢI ĐÁP THẮC MẮC",
+                faq_title: "Câu Hỏi Thường Gặp",
+                gb_tag: "SỔ LƯU BÚT ĐIỆN TỬ",
+                gb_title: "Cảm Tưởng Dâng Bác",
+                gb_lbl_name: "Họ tên / Đoàn khách",
+                gb_lbl_preset: "Chọn nhanh lời cảm tưởng mẫu",
+                gb_lbl_msg: "Nội dung lưu bút",
+                gb_btn_submit: "Ghi vào Sổ lưu bút",
+
+                footer_title: "Lăng Chủ Tịch Hồ Chí Minh • Quần thể Di tích Ba Đình",
+                footer_address: "Số 2 Hùng Vương, Điện Biên, Ba Đình, Hà Nội, Việt Nam",
+                footer_disclaimer: "Trang web giả lập tương tác phục vụ mục đích giáo dục, giới thiệu văn hóa & du lịch di sản lịch sử Việt Nam."
+            },
+            en: {
+                brand_title: "Ho Chi Minh Mausoleum",
+                brand_sub: "Ba Dinh Relic Complex • Hanoi",
+                nav_overview: "Overview",
+                nav_tour: "360° Virtual Tour",
+                nav_arch: "Architecture & History",
+                nav_guide: "Rules & Opening Hours",
+                nav_guestbook: "FAQ & Guestbook",
+
+                hero_badge: "SPECIAL NATIONAL HISTORICAL RELIC • HANOI",
+                hero_title: 'Ho Chi Minh <span class="text-bronze-light block sm:inline">Mausoleum</span>',
+                hero_subtitle: "The eternal resting place of President Ho Chi Minh — a sacred monument of national gratitude, independence, and monumental lotus-inspired architecture in the heart of Hanoi.",
+                hero_quote: "“Nothing is more precious than independence and freedom.”",
+                hero_quote_author: "— President Ho Chi Minh (1890 – 1969)",
+                hero_cta_primary: "Start Virtual Tour",
+                hero_cta_secondary: "Opening Hours & Rules",
+                hero_img_caption: "Architectural simulation of the Mausoleum & Ba Dinh Square",
+
+                tour_tag: "DIGITAL HERITAGE EXPERIENCE",
+                tour_title: "Interactive Virtual Tour & Ba Dinh Complex Map",
+                tour_desc: "Select any landmark on the Ba Dinh complex masterplan to explore simulated 360° views, read historical insights, and listen to automated voice narration.",
+                map_heading: "Ba Dinh Complex Map",
+                map_hint: "Tap a hotspot",
+                pano_badge: "Simulated 360° View",
+                pano_drag_hint: "Drag horizontally or use arrows to pan view",
+                audio_play: "Play Audio Guide",
+                audio_stop: "Stop Narration",
+
+                arch_tag: "ARCHITECTURAL & HISTORICAL HERITAGE",
+                arch_title: "Historical Milestones & Vietnamese Craftsmanship",
+                arch_desc: "Built through the devotion of people across Vietnam and international friends, uniting precious stones, timber, and flora from every region of the country.",
+                stat_height: "Monument Height",
+                stat_lawns: "Square Grass Plots",
+                stat_trees: "Native Plant Species",
+                stat_inauguration: "Inauguration Date",
+                timeline_heading: "Historical Timeline of Ba Dinh",
+
+                mat_granite_title: "Granite & Red Porphyry Stone",
+                mat_granite_desc: "Clad in enduring gray granite quarried from Binh Dinh, Thanh Hoa, and Nghe An mountains, accented with deep red porphyry stone on the main facade.",
+                mat_granite_loc: "Origin: Binh Dinh • Thanh Hoa • Nghe An",
+                mat_wood_title: "Precious Timber from Central Highlands",
+                mat_wood_desc: "Interior doors, ceilings, and paneling were crafted from rare fragrant rosewood, fokienia, and mahogany gifted by communities in the Central Highlands.",
+                mat_wood_loc: "Origin: Central Highlands • Truong Son",
+                mat_flora_title: "Botanical Flora From All Regions",
+                mat_flora_desc: "Two iconic bamboo groves from Cao Bang and Thanh Hoa stand alongside over 250 native plant species gathered from all 63 provinces of Vietnam.",
+                mat_flora_loc: "Origin: All 63 Provinces of Vietnam",
+
+                guide_tag: "VISITOR HANDBOOK",
+                guide_title: "Opening Hours & Preparation Simulator",
+                guide_desc: "Check seasonal visiting schedules and test your attire and belongings in our interactive simulator before entering the solemn Mausoleum area.",
+                hours_heading: "Visiting Schedule",
+                season_hot: "Hot Season (Apr 01 – Oct 31)",
+                season_hot_time: "• Tue, Wed, Thu: <strong>07:30 – 10:30</strong><br>• Sat, Sun & Public Holidays: <strong>07:30 – 11:00</strong>",
+                season_cold: "Cold Season (Nov 01 – Mar 31)",
+                season_cold_time: "• Tue, Wed, Thu: <strong>08:00 – 11:00</strong><br>• Sat, Sun & Public Holidays: <strong>08:00 – 11:30</strong>",
+                hours_note_title: "Important Notices:",
+                hours_note_body: "• The Mausoleum is <strong>closed every Monday and Friday</strong> (except May 19, Sep 2, and Lunar New Year Day).<br>• Daily Flag Raising Ceremony takes place at <strong>06:00</strong> and Flag Lowering at <strong>21:00</strong> on Ba Dinh Square.",
+
+                sim_badge: "INTERACTIVE CHECKER",
+                sim_heading: "Pre-Visit Preparation Check",
+                sim_lbl_outfit: "1. Your Attire",
+                opt_outfit_formal: "Collared shirt / Ao Dai / Long trousers",
+                opt_outfit_casual: "Polo shirt & Full-length jeans",
+                opt_outfit_shorts: "Shorts / Mini-skirt / Sleeveless top",
+                sim_lbl_items: "2. Carried Belongings",
+                opt_item_light: "Small wallet & silent mobile phone only",
+                opt_item_bag: "Large backpack, DSLR camera, food",
+                opt_item_liquid: "Large water bottles or sharp metal objects",
+                sim_lbl_day: "3. Planned Visit Time",
+                opt_day_valid: "Tue, Wed, Thu or Weekend (Morning)",
+                opt_day_monfri: "Monday or Friday (Regular weekday)",
+                opt_day_afternoon: "Afternoon (14:00 – 16:00)",
+
+                faq_tag: "VISITOR SUPPORT",
+                faq_title: "Frequently Asked Questions",
+                gb_tag: "DIGITAL GUESTBOOK",
+                gb_title: "Visitor Reflections & Tributes",
+                gb_lbl_name: "Your Name / Delegation",
+                gb_lbl_preset: "Quick Tribute Template",
+                gb_lbl_msg: "Your Message",
+                gb_btn_submit: "Sign Guestbook",
+
+                footer_title: "Ho Chi Minh Mausoleum • Ba Dinh Relic Complex",
+                footer_address: "No. 2 Hung Vuong Street, Dien Bien, Ba Dinh, Hanoi, Vietnam",
+                footer_disclaimer: "Interactive educational and cultural heritage simulation showcasing Vietnam's historic Ba Dinh Complex."
+            }
+        };
+
+        // 5 Interactive Hotspots Data
+        const spotsData = {
+            square: {
+                num: 1,
+                vi: {
+                    cat: "Điểm dừng #1 • Không gian lễ nghi",
+                    title: "Quảng trường Ba Đình & Lễ Thượng cờ",
+                    desc: "Quảng trường lớn nhất Việt Nam với chiều dài 320m, rộng 100m, nổi bật với 240 ô cỏ xanh mướt luôn tươi tốt quanh năm. Nơi đây từng chứng kiến Lễ Tuyên ngôn Độc lập ngày 2/9/1945 và là địa điểm diễn ra nghi thức Thượng cờ (06:00) và Hạ cờ (21:00) trang nghiêm mỗi ngày.",
+                    highlights: [
+                        { label: "Diện tích", val: "320m x 100m" },
+                        { label: "Cột cờ", val: "Cao 29 mét" },
+                        { label: "Nghi lễ", val: "06:00 & 21:00" }
+                    ]
+                },
+                en: {
+                    cat: "Stop #1 • Ceremonial Grounds",
+                    title: "Ba Dinh Square & Flag Ceremony",
+                    desc: "Vietnam's largest historic square (320m by 100m), featuring 240 manicured green grass plots. Site of the historic 1945 Declaration of Independence, it hosts the solemn daily Flag Raising Ceremony at 06:00 and Flag Lowering Ceremony at 21:00.",
+                    highlights: [
+                        { label: "Dimensions", val: "320m x 100m" },
+                        { label: "Flagpole", val: "29m High" },
+                        { label: "Ceremonies", val: "06:00 & 21:00" }
+                    ]
+                },
+                panoSvg: `
+                    <svg viewBox="0 0 1200 400" class="w-full h-full object-cover" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="sqSky" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#1E40AF"/>
+                                <stop offset="100%" stop-color="#93C5FD"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="1200" height="230" fill="url(#sqSky)"/>
+                        <circle cx="950" cy="85" r="45" fill="#FEF08A" opacity="0.8"/>
+                        <!-- Horizon Buildings -->
+                        <rect x="0" y="195" width="1200" height="35" fill="#166534"/>
+                        <!-- Distant Mausoleum Silhouette -->
+                        <rect x="480" y="145" width="240" height="85" fill="#4B5563"/>
+                        <rect x="470" y="130" width="260" height="18" fill="#7F1D1D"/>
+                        <!-- Ground & 240 Grass Squares -->
+                        <rect x="0" y="230" width="1200" height="170" fill="#E5E7EB"/>
+                        <g fill="#15803D">
+                            <rect x="60" y="245" width="140" height="45" rx="4"/>
+                            <rect x="220" y="245" width="140" height="45" rx="4"/>
+                            <rect x="380" y="245" width="140" height="45" rx="4"/>
+                            <rect x="680" y="245" width="140" height="45" rx="4"/>
+                            <rect x="840" y="245" width="140" height="45" rx="4"/>
+                            <rect x="1000" y="245" width="140" height="45" rx="4"/>
+                            <rect x="40" y="305" width="150" height="65" rx="4"/>
+                            <rect x="210" y="305" width="150" height="65" rx="4"/>
+                            <rect x="380" y="305" width="150" height="65" rx="4"/>
+                            <rect x="670" y="305" width="150" height="65" rx="4"/>
+                            <rect x="840" y="305" width="150" height="65" rx="4"/>
+                            <rect x="1010" y="305" width="150" height="65" rx="4"/>
+                        </g>
+                        <!-- Tall Flagpole -->
+                        <line x1="600" y1="240" x2="600" y2="45" stroke="#FFFFFF" stroke-width="5"/>
+                        <rect x="600" y="48" width="75" height="48" fill="#DC2626"/>
+                        <polygon points="637,58 641,69 652,69 643,76 646,87 637,80 628,87 631,76 622,69 633,69" fill="#FACC15"/>
+                    </svg>`
+            },
+            mausoleum: {
+                num: 2,
+                vi: {
+                    cat: "Điểm dừng #2 • Trung tâm Quần thể",
+                    title: "Lăng Chủ tịch Hồ Chí Minh",
+                    desc: "Công trình kiến trúc đài hoa sen cách điệu cao 21,6m, gồm 3 lớp bậc thang uy nghi. Bên trong phòng Trung tâm ốp đá hoa cương trang trọng là nơi đặt thi hài Chủ tịch Hồ Chí Minh trong hòm kính pha lê tinh khiết, được các chiến sĩ Bộ Tư lệnh Bảo vệ Lăng túc trực 24/24 giờ.",
+                    highlights: [
+                        { label: "Khánh thành", val: "29/08/1975" },
+                        { label: "Kiến trúc", val: "Đài hoa sen 3 tầng" },
+                        { label: "Bảo vệ", val: "Túc trực 24/7" }
+                    ]
+                },
+                en: {
+                    cat: "Stop #2 • Central Monument",
+                    title: "Ho Chi Minh Mausoleum",
+                    desc: "Standing 21.6 meters tall with a three-tiered lotus-inspired silhouette, the Mausoleum houses the embalmed body of President Ho Chi Minh inside a crystal-clear glass sarcophagus in the solemn granite Central Hall, guarded round the clock by an honor guard.",
+                    highlights: [
+                        { label: "Inaugurated", val: "Aug 29, 1975" },
+                        { label: "Style", val: "3-Tier Lotus Form" },
+                        { label: "Honor Guard", val: "24/7 Watch" }
+                    ]
+                },
+                panoSvg: `
+                    <svg viewBox="0 0 1200 400" class="w-full h-full object-cover" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="mSky" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#1E293B"/>
+                                <stop offset="100%" stop-color="#B45309"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="1200" height="280" fill="url(#mSky)"/>
+                        <!-- Lush Trees Flanking -->
+                        <g fill="#14532D">
+                            <circle cx="150" cy="240" r="85"/>
+                            <circle cx="260" cy="255" r="70"/>
+                            <circle cx="940" cy="255" r="70"/>
+                            <circle cx="1050" cy="240" r="85"/>
+                        </g>
+                        <!-- Mausoleum Wide Panorama -->
+                        <rect x="330" y="95" width="540" height="22" fill="#4B5563"/>
+                        <rect x="315" y="117" width="570" height="36" fill="#7F1D1D"/>
+                        <text x="600" y="141" text-anchor="middle" fill="#FBBF24" font-family="serif" font-weight="bold" font-size="18" letter-spacing="4">CHỦ TỊCH HỒ - CHÍ - MINH</text>
+                        <rect x="340" y="153" width="520" height="105" fill="#1F2937"/>
+                        <!-- Columns -->
+                        <g fill="#6B7280">
+                            <rect x="350" y="153" width="26" height="105"/>
+                            <rect x="405" y="153" width="26" height="105"/>
+                            <rect x="460" y="153" width="26" height="105"/>
+                            <rect x="515" y="153" width="26" height="105"/>
+                            <rect x="659" y="153" width="26" height="105"/>
+                            <rect x="714" y="153" width="26" height="105"/>
+                            <rect x="769" y="153" width="26" height="105"/>
+                            <rect x="824" y="153" width="26" height="105"/>
+                        </g>
+                        <!-- Sacred Portal -->
+                        <rect x="560" y="175" width="80" height="83" fill="#7F1D1D" stroke="#F59E0B" stroke-width="2"/>
+                        <rect x="575" y="190" width="50" height="68" fill="#090D16"/>
+                        <!-- Base Steps -->
+                        <rect x="280" y="258" width="640" height="24" fill="#4B5563"/>
+                        <rect x="0" y="282" width="1200" height="118" fill="#D1D5DB"/>
+                        <polygon points="520,282 680,282 760,400 440,400" fill="#F3F4F6"/>
+                    </svg>`
+            },
+            stilt_house: {
+                num: 3,
+                vi: {
+                    cat: "Điểm dừng #3 • Khu Di tích Phủ Chủ tịch",
+                    title: "Nhà sàn Bác Hồ & Ao cá",
+                    desc: "Ngôi nhà sàn bằng gỗ 2 tầng giản dị nằm giữa vườn cây xanh mát bên bờ Ao cá, nơi Chủ tịch Hồ Chí Minh đã sống và làm việc từ năm 1958 đến năm 1969. Không gian mộc mạc phản ánh trọn vẹn phong cách sống thanh cao, gần gũi với thiên nhiên của Người.",
+                    highlights: [
+                        { label: "Thời gian", val: "1958 – 1969" },
+                        { label: "Chất liệu", val: "Gỗ tự nhiên 2 tầng" },
+                        { label: "Cảnh quan", val: "Ao cá & Vườn xoài" }
+                    ]
+                },
+                en: {
+                    cat: "Stop #3 • Presidential Palace Relic Site",
+                    title: "Uncle Ho's Stilt House & Fish Pond",
+                    desc: "A modest two-story wooden stilt house nestled amidst lush gardens beside a tranquil fish pond, where President Ho Chi Minh lived and worked from 1958 to 1969. Its simplicity embodies his humble lifestyle and deep harmony with nature.",
+                    highlights: [
+                        { label: "Residence", val: "1958 – 1969" },
+                        { label: "Structure", val: "2-Story Timber" },
+                        { label: "Scenery", val: "Koi Pond & Orchard" }
+                    ]
+                },
+                panoSvg: `
+                    <svg viewBox="0 0 1200 400" class="w-full h-full object-cover" preserveAspectRatio="none">
+                        <rect width="1200" height="250" fill="#DCFCE7"/>
+                        <!-- Lush Garden Canopy -->
+                        <g fill="#15803D">
+                            <circle cx="120" cy="110" r="120"/>
+                            <circle cx="340" cy="80" r="110"/>
+                            <circle cx="860" cy="85" r="115"/>
+                            <circle cx="1080" cy="110" r="125"/>
+                        </g>
+                        <!-- Wooden Stilt House -->
+                        <polygon points="430,130 600,70 770,130" fill="#78350F"/>
+                        <rect x="460" y="130" width="280" height="65" fill="#92400E" stroke="#451A03" stroke-width="2"/>
+                        <!-- Open Windows -->
+                        <rect x="490" y="142" width="45" height="35" fill="#FEF3C7"/>
+                        <rect x="578" y="142" width="45" height="35" fill="#FEF3C7"/>
+                        <rect x="665" y="142" width="45" height="35" fill="#FEF3C7"/>
+                        <!-- Wooden Stilts -->
+                        <g fill="#451A03">
+                            <rect x="470" y="195" width="14" height="65"/>
+                            <rect x="550" y="195" width="14" height="65"/>
+                            <rect x="635" y="195" width="14" height="65"/>
+                            <rect x="715" y="195" width="14" height="65"/>
+                        </g>
+                        <!-- Garden Ground & Tranquil Fish Pond -->
+                        <rect x="0" y="255" width="1200" height="145" fill="#166534"/>
+                        <ellipse cx="600" cy="330" rx="420" ry="55" fill="#0284C7" stroke="#7DD3FC" stroke-width="3"/>
+                        <!-- Koi Fish Ripples -->
+                        <ellipse cx="520" cy="325" rx="22" ry="7" fill="none" stroke="#BAE6FD" stroke-width="2"/>
+                        <ellipse cx="680" cy="338" rx="28" ry="8" fill="none" stroke="#BAE6FD" stroke-width="2"/>
+                    </svg>`
+            },
+            pagoda: {
+                num: 4,
+                vi: {
+                    cat: "Điểm dừng #4 • Di sản Văn hóa Nghìn năm",
+                    title: "Chùa Một Cột (Diên Hựu Tự)",
+                    desc: "Được xây dựng từ năm 1049 dưới triều vua Lý Thái Tông, Chùa Một Cột mang kiến trúc độc nhất vô nhị tựa như một đóa hoa sen vươn lên từ mặt hồ Linh Chiểu, biểu tượng cho trí tuệ, sự thanh tịnh và hồn cốt văn hóa Thăng Long – Hà Nội.",
+                    highlights: [
+                        { label: "Niên đại", val: "Năm 1049 (Nhà Lý)" },
+                        { label: "Kiến trúc", val: "Đài Liên Hoa 1 cột" },
+                        { label: "Ý nghĩa", val: "Biểu tượng Hà Nội" }
+                    ]
+                },
+                en: {
+                    cat: "Stop #4 • Millennial Cultural Icon",
+                    title: "One Pillar Pagoda (Dien Huu Pagoda)",
+                    desc: "Originally built in 1049 under Emperor Ly Thai Tong, this iconic wooden temple rests upon a single stone pillar rising from Linh Chieu Lotus Pond, resembling a blooming lotus flower symbolizing purity and Hanoi's millennial heritage.",
+                    highlights: [
+                        { label: "Built", val: "1049 AD (Ly Dynasty)" },
+                        { label: "Design", val: "Single Stone Pillar" },
+                        { label: "Symbolism", val: "Blooming Lotus" }
+                    ]
+                },
+                panoSvg: `
+                    <svg viewBox="0 0 1200 400" class="w-full h-full object-cover" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="pgSky" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#312E81"/>
+                                <stop offset="100%" stop-color="#F59E0B"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="1200" height="270" fill="url(#pgSky)"/>
+                        <!-- Ancient Bodhi Trees -->
+                        <circle cx="220" cy="210" r="110" fill="#14532D"/>
+                        <circle cx="980" cy="210" r="110" fill="#14532D"/>
+                        <!-- Lotus Pond -->
+                        <rect x="0" y="265" width="1200" height="135" fill="#0369A1"/>
+                        <!-- Stone Pillar -->
+                        <rect x="582" y="195" width="36" height="90" fill="#9CA3AF"/>
+                        <!-- Wooden Struts -->
+                        <polygon points="582,215 525,180 675,180 618,215" fill="#78350F"/>
+                        <!-- Pagoda Sanctuary & Curved Roof -->
+                        <rect x="530" y="135" width="140" height="45" fill="#991B1B"/>
+                        <path d="M 495 135 Q 600 85 705 135 Z" fill="#B45309"/>
+                        <path d="M 485 135 Q 495 120 505 135" fill="none" stroke="#F59E0B" stroke-width="4"/>
+                        <path d="M 695 135 Q 705 120 715 135" fill="none" stroke="#F59E0B" stroke-width="4"/>
+                        <!-- Lotus Pads in Pond -->
+                        <g fill="#22C55E" opacity="0.8">
+                            <ellipse cx="440" cy="310" rx="26" ry="8"/>
+                            <ellipse cx="510" cy="340" rx="30" ry="9"/>
+                            <ellipse cx="690" cy="335" rx="28" ry="8"/>
+                            <ellipse cx="760" cy="305" rx="25" ry="7"/>
+                        </g>
+                    </svg>`
+            },
+            museum: {
+                num: 5,
+                vi: {
+                    cat: "Điểm dừng #5 • Không gian Trưng bày Hiện đại",
+                    title: "Bảo tàng Hồ Chí Minh",
+                    desc: "Khánh thành năm 1990 nhân kỷ niệm 100 năm Ngày sinh Chủ tịch Hồ Chí Minh, bảo tàng mang hình khối bông sen trắng thanh thoát, lưu giữ hơn 12 vạn tư liệu, hiện vật và tác phẩm nghệ thuật tái hiện sinh động cuộc đời, sự nghiệp vĩ đại của Người.",
+                    highlights: [
+                        { label: "Khánh thành", val: "19/05/1990" },
+                        { label: "Hiện vật", val: "Hơn 120.000 tư liệu" },
+                        { label: "Hình tượng", val: "Bông sen trắng" }
+                    ]
+                },
+                en: {
+                    cat: "Stop #5 • Modern Exhibition Space",
+                    title: "Ho Chi Minh Museum",
+                    desc: "Inaugurated in 1990 on the centenary of President Ho Chi Minh's birth, this monumental white lotus-shaped museum preserves over 120,000 artifacts, documents, and immersive art installations chronicling his life and global revolutionary journey.",
+                    highlights: [
+                        { label: "Opened", val: "May 19, 1990" },
+                        { label: "Collection", val: "120,000+ Artifacts" },
+                        { label: "Architecture", val: "White Lotus Form" }
+                    ]
+                },
+                panoSvg: `
+                    <svg viewBox="0 0 1200 400" class="w-full h-full object-cover" preserveAspectRatio="none">
+                        <rect width="1200" height="280" fill="#BAE6FD"/>
+                        <!-- Modern White Lotus Museum Architecture -->
+                        <polygon points="360,260 410,115 790,115 840,260" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+                        <polygon points="430,115 465,75 735,75 770,115" fill="#E2E8F0"/>
+                        <!-- Stylized Lotus Petal Reliefs -->
+                        <polygon points="440,260 510,130 580,260" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+                        <polygon points="620,260 690,130 760,260" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5"/>
+                        <!-- Entrance Plaza -->
+                        <rect x="545" y="205" width="110" height="55" fill="#334155"/>
+                        <rect x="0" y="260" width="1200" height="140" fill="#E2E8F0"/>
+                        <rect x="280" y="275" width="640" height="110" fill="#CBD5E1"/>
+                    </svg>`
+            }
+        };
+
+        // Timeline Data
+        const timelineData = [
+            {
+                year: "1945",
+                vi: {
+                    date: "Ngày 02 tháng 09",
+                    title: "Tuyên ngôn Độc lập khai sinh nước Việt Nam Dân chủ Cộng hòa",
+                    text: "Tại Quảng trường Ba Đình lịch sử, Chủ tịch Hồ Chí Minh đọc bản Tuyên ngôn Độc lập bất hủ trước hàng chục vạn đồng bào, mở ra kỷ nguyên độc lập, tự do cho dân tộc Việt Nam."
+                },
+                en: {
+                    date: "September 02",
+                    title: "Declaration of Independence of the Democratic Republic of Vietnam",
+                    text: "At historic Ba Dinh Square, President Ho Chi Minh proclaimed the immortal Declaration of Independence before hundreds of thousands of citizens, ushering in a new era of freedom."
+                }
+            },
+            {
+                year: "1969",
+                vi: {
+                    date: "Ngày 02 tháng 09",
+                    title: "Chủ tịch Hồ Chí Minh từ trần & Quyết định xây dựng Lăng",
+                    text: "Sau khi Bác qua đời, thể theo nguyện vọng thiết tha của toàn Đảng, toàn dân và toàn quân, Bộ Chính trị quyết định giữ gìn lâu dài thi hài Chủ tịch Hồ Chí Minh và xây dựng Lăng của Người tại Ba Đình."
+                },
+                en: {
+                    date: "September 02",
+                    title: "Passing of President Ho Chi Minh & Decision to Build the Mausoleum",
+                    text: "Fulfilling the heartfelt wishes of the Vietnamese people, the leadership resolved to preserve President Ho Chi Minh's body and construct a permanent Mausoleum at Ba Dinh Square."
+                }
+            },
+            {
+                year: "1973",
+                vi: {
+                    date: "Ngày 02 tháng 09",
+                    title: "Lễ khởi công xây dựng Lăng Chủ tịch Hồ Chí Minh",
+                    text: "Công trình chính thức được khởi công tại vị trí lễ đài cũ giữa Quảng trường Ba Đình với sự tham gia của hàng vạn cán bộ, chiến sĩ, kỹ sư Việt Nam cùng các chuyên gia Liên Xô."
+                },
+                en: {
+                    date: "September 02",
+                    title: "Groundbreaking Ceremony of the Mausoleum",
+                    text: "Construction officially began on the site of the former tribune in Ba Dinh Square, uniting thousands of Vietnamese engineers, soldiers, workers, and Soviet specialists."
+                }
+            },
+            {
+                year: "1975",
+                vi: {
+                    date: "Ngày 29 tháng 08",
+                    title: "Khánh thành Lăng & Mở cửa đón đồng bào, khách quốc tế",
+                    text: "Sau gần 2 năm thi công khẩn trương, Lăng Chủ tịch Hồ Chí Minh chính thức khánh thành ngay trước dịp kỷ niệm 30 năm Quốc khánh 2/9, đón những đoàn khách đầu tiên vào viếng Bác."
+                },
+                en: {
+                    date: "August 29",
+                    title: "Inauguration & Opening to Citizens and International Visitors",
+                    text: "Completed just ahead of the 30th National Day, the Mausoleum was officially inaugurated, welcoming millions of Vietnamese citizens and international delegations ever since."
+                }
+            }
+        ];
+
+        // FAQ Data
+        const faqData = [
+            {
+                vi: {
+                    q: "Vào viếng Lăng Bác có mất vé không?",
+                    a: "Hoàn toàn miễn phí đối với tất cả công dân Việt Nam và du khách quốc tế khi vào viếng Lăng Chủ tịch Hồ Chí Minh."
+                },
+                en: {
+                    q: "Is there an admission fee to visit the Mausoleum?",
+                    a: "Admission to Ho Chi Minh Mausoleum is completely free of charge for both Vietnamese citizens and international visitors."
+                }
+            },
+            {
+                vi: {
+                    q: "Có được phép chụp ảnh, quay phim bên trong Lăng không?",
+                    a: "Không. Du khách tuyệt đối không quay phim, chụp ảnh, vẽ phác họa bên trong Lăng và giữ trật tự trang nghiêm suốt hành trình viếng."
+                },
+                en: {
+                    q: "Are photography and filming allowed inside the Mausoleum?",
+                    a: "No. Photography, video recording, and sketching are strictly prohibited inside the Mausoleum hall, and visitors must maintain solemn silence."
+                }
+            },
+            {
+                vi: {
+                    q: "Gửi hành lý và thiết bị điện tử ở đâu trước khi vào Lăng?",
+                    a: "Ban Quản lý Lăng có khu vực ký gửi hành lý, túi xách, máy ảnh miễn phí tại cổng vào đường Ngọc Hà và Lê Hồng Phong trước khi qua cửa kiểm tra an ninh."
+                },
+                en: {
+                    q: "Where can I store bags and cameras before entering?",
+                    a: "Free luggage and camera storage counters are available at the security checkpoints along Ngoc Ha and Le Hong Phong entrances."
+                }
+            },
+            {
+                vi: {
+                    q: "Lăng Bác có đóng cửa bảo trì định kỳ hàng năm không?",
+                    a: "Có. Hàng năm Lăng thường tạm ngừng tổ chức lễ viếng khoảng 2 tháng (thường từ giữa tháng 6 đến giữa tháng 8) để thực hiện công tác tu bổ, bảo dưỡng định kỳ."
+                },
+                en: {
+                    q: "Does the Mausoleum close for annual maintenance?",
+                    a: "Yes. The Mausoleum closes annually for about two months (typically mid-June to mid-August) for scheduled conservation and maintenance."
+                }
+            }
+        ];
+
+        // Guestbook Initial Entries & Presets
+        let guestbookEntries = [
+            {
+                name: "Trần Quốc Bảo • TP. Hồ Chí Minh",
+                time: "Hôm nay",
+                msg: "Đứng trước Quảng trường Ba Đình lộng gió, lòng trào dâng niềm xúc động và biết ơn vô hạn đối với Bác Hồ kính yêu."
+            },
+            {
+                name: "Elena Rostova • International Visitor",
+                time: "2 days ago",
+                msg: "A deeply moving and peaceful experience. The respect of the Vietnamese people and the beauty of Uncle Ho's stilt house garden left a lasting impression."
+            },
+            {
+                name: "Đoàn Thanh niên Trường THPT Chu Văn An",
+                time: "3 days ago",
+                msg: "Tuổi trẻ Thủ đô nguyện ra sức học tập, rèn luyện theo tư tưởng, đạo đức, phong cách Hồ Chí Minh!"
+            }
+        ];
+
+        const guestbookPresets = {
+            vi: [
+                { label: "-- Chọn câu mẫu hoặc tự viết --", text: "" },
+                { label: "Lòng biết ơn sâu sắc", text: "Đời đời nhớ ơn Chủ tịch Hồ Chí Minh vĩ đại! Nguyện sống, chiến đấu, lao động và học tập theo gương Bác Hồ kính yêu." },
+                { label: "Cảm xúc lần đầu viếng Lăng", text: "Lần đầu tiên được ra Thủ đô Hà Nội và vào Lăng viếng Bác, niềm xúc động thiêng liêng sẽ mãi khắc ghi trong tim." }
+            ],
+            en: [
+                { label: "-- Choose a template or write your own --", text: "" },
+                { label: "Deep Respect & Gratitude", text: "Honoring the enduring legacy of President Ho Chi Minh — a timeless symbol of peace, independence, and humility." },
+                { label: "Memorable Visit to Hanoi", text: "Visiting the Ba Dinh Complex and Ho Chi Minh Mausoleum is truly the most meaningful cultural experience during our trip to Vietnam." }
+            ]
+        };
+
+        // Toast Notification Helper
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-800 border-emerald-400' : (type === 'warn' ? 'bg-amber-800 border-amber-400' : 'bg-granite-dark border-bronze');
+            toast.className = `pointer-events-auto px-4 py-3 rounded-2xl text-white text-xs sm:text-sm font-medium shadow-xl border ${bgClass} flex items-center gap-2.5 transition-all transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-bronze-light"></i><span>${message}</span>`;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // Switch Language VI <-> EN
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+
+            // Stop speech if currently reading
+            if (isSpeaking) stopAudioNarration();
+
+            // Update toggle button styles
+            const btnVi = document.getElementById('btn-lang-vi');
+            const btnEn = document.getElementById('btn-lang-en');
+            if (lang === 'vi') {
+                btnVi.className = "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-vermilion text-white shadow-sm";
+                btnEn.className = "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all text-granite hover:text-vermilion";
+            } else {
+                btnEn.className = "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-vermilion text-white shadow-sm";
+                btnVi.className = "px-3.5 py-1.5 rounded-full text-xs font-bold transition-all text-granite hover:text-vermilion";
+            }
+
+            // Update Brand Header
+            document.getElementById('nav-brand-title').textContent = i18n[lang].brand_title;
+            document.getElementById('nav-brand-sub').textContent = i18n[lang].brand_sub;
+
+            // Update all data-i18n elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Re-render dynamic interactive components
+            renderSpotList();
+            selectSpot(currentSpotId);
+            selectTimeline(currentTimelineIdx);
+            evaluatePreparation();
+            renderFAQ();
+            renderGuestbookPresets();
+            renderGuestbookList();
+
+            showToast(lang === 'vi' ? 'Đã chuyển sang Tiếng Việt' : 'Switched to English');
+        }
+
+        // Render Interactive Spot List Buttons
+        function renderSpotList() {
+            const listEl = document.getElementById('spot-list');
+            listEl.innerHTML = Object.keys(spotsData).map(key => {
+                const spot = spotsData[key];
+                const content = spot[currentLang];
+                const isActive = key === currentSpotId;
+                return `
+                    <button onclick="selectSpot('${key}')" class="w-full text-left px-4 py-3 rounded-2xl transition-all flex items-center justify-between border ${isActive ? 'bg-vermilion text-white border-vermilion shadow-md' : 'bg-cream hover:bg-cream-dark text-granite-dark border-bronze/20'}">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center ${isActive ? 'bg-bronze text-granite-dark' : 'bg-vermilion/15 text-vermilion'}">
+                                ${spot.num}
+                            </span>
+                            <span class="text-xs sm:text-sm font-semibold">${content.title}</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs ${isActive ? 'text-bronze-light' : 'text-granite/50'}"></i>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Select Hotspot on Map / List
+        function selectSpot(spotId) {
+            currentSpotId = spotId;
+            if (isSpeaking) stopAudioNarration();
+
+            const spot = spotsData[spotId];
+            const content = spot[currentLang];
+
+            // Update Pin Highlights
+            document.querySelectorAll('.hotspot-btn').forEach(btn => {
+                btn.classList.remove('bg-bronze', 'text-granite-dark', 'hotspot-pulse', 'scale-110', 'z-20');
+                btn.classList.add('bg-vermilion', 'text-white', 'z-10');
+            });
+            const activePin = document.getElementById(`pin-${spotId}`);
+            if (activePin) {
+                activePin.classList.remove('bg-vermilion', 'text-white', 'z-10');
+                activePin.classList.add('bg-bronze', 'text-granite-dark', 'hotspot-pulse', 'scale-110', 'z-20');
+            }
+
+            // Update Panorama Scene & Detail Card
+            document.getElementById('panorama-canvas').innerHTML = spot.panoSvg;
+            document.getElementById('spot-category').textContent = content.cat;
+            document.getElementById('spot-title').textContent = content.title;
+            document.getElementById('spot-description').textContent = content.desc;
+
+            // Update Highlights
+            document.getElementById('spot-highlights').innerHTML = content.highlights.map(h => `
+                <div class="p-3.5 rounded-2xl bg-cream border border-bronze/25">
+                    <span class="block text-[11px] uppercase tracking-wider text-granite font-semibold">${h.label}</span>
+                    <span class="block font-serif font-bold text-sm sm:text-base text-vermilion mt-0.5">${h.val}</span>
+                </div>
+            `).join('');
+
+            renderSpotList();
+        }
+
+        // Simulated 360° Drag & Button Panning
+        function panPanorama(deltaPx) {
+            panoOffset = Math.max(-44, Math.min(0, panoOffset + (deltaPx * 0.15)));
+            updatePanoramaTransform();
+        }
+
+        function updatePanoramaTransform() {
+            const canvas = document.getElementById('panorama-canvas');
+            canvas.style.transform = `translateX(${panoOffset}%)`;
+            const deg = Math.round(((panoOffset + 22) / 22) * 90);
+            const dir = deg === 0 ? 'N' : (deg > 0 ? 'W' : 'E');
+            document.getElementById('pano-angle-indicator').textContent = `${Math.abs(deg)}° ${dir}`;
+        }
+
+        // Initialize Drag Listeners on Panorama Viewport
+        function initPanoramaDrag() {
+            const viewport = document.getElementById('panorama-container');
+            let isDragging = false;
+            let startX = 0;
+
+            viewport.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+            });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                startX = e.clientX;
+                panoOffset = Math.max(-44, Math.min(0, panoOffset + dx * 0.08));
+                updatePanoramaTransform();
+            });
+
+            // Touch support
+            viewport.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+            }, { passive: true });
+            viewport.addEventListener('touchend', () => { isDragging = false; });
+            viewport.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const dx = e.touches[0].clientX - startX;
+                startX = e.touches[0].clientX;
+                panoOffset = Math.max(-44, Math.min(0, panoOffset + dx * 0.1));
+                updatePanoramaTransform();
+            }, { passive: true });
+        }
+
+        // Web Speech API Audio Narration
+        function toggleAudioNarration() {
+            if (!('speechSynthesis' in window)) {
+                showToast(currentLang === 'vi' ? 'Trình duyệt không hỗ trợ đọc giọng nói.' : 'Speech synthesis not supported in this browser.', 'warn');
+                return;
+            }
+
+            if (isSpeaking) {
+                stopAudioNarration();
+                return;
+            }
+
+            const spot = spotsData[currentSpotId][currentLang];
+            const utterance = new SpeechSynthesisUtterance(`${spot.title}. ${spot.desc}`);
+            utterance.lang = currentLang === 'vi' ? 'vi-VN' : 'en-US';
+            utterance.rate = 0.96;
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                document.getElementById('audio-icon').className = "fa-solid fa-stop animate-pulse";
+                document.getElementById('audio-btn-text').textContent = i18n[currentLang].audio_stop;
+                document.getElementById('btn-audio-guide').classList.replace('bg-vermilion', 'bg-bronze-dark');
+            };
+
+            utterance.onend = () => {
+                stopAudioNarration();
+            };
+
+            utterance.onerror = () => {
+                stopAudioNarration();
+            };
+
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function stopAudioNarration() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            isSpeaking = false;
+            document.getElementById('audio-icon').className = "fa-solid fa-volume-high";
+            document.getElementById('audio-btn-text').textContent = i18n[currentLang].audio_play;
+            document.getElementById('btn-audio-guide').classList.replace('bg-bronze-dark', 'bg-vermilion');
+        }
+
+        // Timeline Selection
+        function selectTimeline(idx) {
+            currentTimelineIdx = idx;
+            document.querySelectorAll('.tl-tab').forEach((btn, i) => {
+                if (i === idx) {
+                    btn.className = "tl-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-vermilion text-white shadow-md";
+                } else {
+                    btn.className = "tl-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-granite-dark hover:bg-bronze/20 border border-bronze/30";
+                }
+            });
+
+            const item = timelineData[idx];
+            const content = item[currentLang];
+            document.getElementById('tl-year').textContent = item.year;
+            document.getElementById('tl-date').textContent = content.date;
+            document.getElementById('tl-title').textContent = content.title;
+            document.getElementById('tl-text').textContent = content.text;
+        }
+
+        // Interactive Visitor Preparation Simulator
+        function evaluatePreparation() {
+            const outfit = document.getElementById('sim-outfit').value;
+            const items = document.getElementById('sim-items').value;
+            const day = document.getElementById('sim-day').value;
+            const box = document.getElementById('sim-result-box');
+
+            let issues = [];
+            if (outfit === 'shorts') {
+                issues.push(currentLang === 'vi'
+                    ? "Trang phục quá ngắn/hở vai không đúng quy định trang nghiêm khi vào Lăng."
+                    : "Shorts, mini-skirts, or sleeveless tops are not permitted inside the Mausoleum.");
+            }
+            if (items !== 'light') {
+                issues.push(currentLang === 'vi'
+                    ? "Bạn cần ký gửi balo lớn, máy ảnh chuyên nghiệp, đồ ăn/nước uống tại quầy an ninh trước khi vào."
+                    : "Large bags, DSLR cameras, food, and large bottles must be checked in at security storage.");
+            }
+            if (day === 'mon_fri') {
+                issues.push(currentLang === 'vi'
+                    ? "Thứ 2 và Thứ 6 hàng tuần Lăng không tổ chức lễ viếng (trừ dịp lễ đặc biệt)."
+                    : "The Mausoleum is closed to visitors every Monday and Friday (except major holidays).");
+            } else if (day === 'afternoon') {
+                issues.push(currentLang === 'vi'
+                    ? "Lễ viếng Lăng Bác chỉ diễn ra vào buổi sáng; buổi chiều bạn có thể tham quan Nhà sàn & Bảo tàng."
+                    : "Mausoleum visits take place in the morning only; afternoon hours are suitable for the Stilt House & Museum.");
+            }
+
+            if (issues.length === 0) {
+                box.className = "p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-500/40 text-emerald-950 transition-all";
+                box.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-sm sm:text-base text-emerald-900">
+                                ${currentLang === 'vi' ? 'Sẵn sàng vào viếng Lăng Bác!' : 'Ready for Your Mausoleum Visit!'}
+                            </h4>
+                            <p class="text-xs sm:text-sm mt-1 text-emerald-800">
+                                ${currentLang === 'vi'
+                                    ? 'Trang phục lịch sự, hành lý gọn nhẹ và khung giờ buổi sáng của bạn hoàn toàn phù hợp quy định trang nghiêm của Ban Quản lý Lăng.'
+                                    : 'Your respectful attire, light belongings, and morning schedule comply fully with the Mausoleum Management Board guidelines.'}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                box.className = "p-5 rounded-2xl bg-amber-50 border-2 border-amber-500/50 text-amber-950 transition-all";
+                const listHtml = issues.map(err => `<li class="ml-4 list-disc">${err}</li>`).join('');
+                box.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-sm sm:text-base text-amber-900">
+                                ${currentLang === 'vi' ? 'Cần lưu ý điều chỉnh trước khi đi:' : 'Adjustments Needed Before Visiting:'}
+                            </h4>
+                            <ul class="text-xs sm:text-sm mt-1.5 space-y-1 text-amber-900">${listHtml}</ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Render FAQ Accordion
+        function renderFAQ() {
+            const container = document.getElementById('faq-accordion');
+            container.innerHTML = faqData.map((item, index) => {
+                const content = item[currentLang];
+                return `
+                    <details class="group bg-cream rounded-2xl border border-bronze/30 overflow-hidden" ${index === 0 ? 'open' : ''}>
+                        <summary class="flex items-center justify-between p-4 sm:p-5 cursor-pointer font-bold text-sm sm:text-base text-granite-dark list-none select-none hover:text-vermilion transition-colors">
+                            <span>${content.q}</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-vermilion transition-transform group-open:rotate-180"></i>
+                        </summary>
+                        <div class="px-4 sm:px-5 pb-4 sm:pb-5 text-xs sm:text-sm text-granite leading-relaxed border-t border-bronze/15 pt-3">
+                            ${content.a}
+                        </div>
+                    </details>
+                `;
+            }).join('');
+        }
+
+        // Guestbook Functions
+        function renderGuestbookPresets() {
+            const select = document.getElementById('gb-preset');
+            select.innerHTML = guestbookPresets[currentLang].map((p, i) => `
+                <option value="${i}">${p.label}</option>
+            `).join('');
+        }
+
+        function applyPresetMessage() {
+            const idx = document.getElementById('gb-preset').value;
+            const preset = guestbookPresets[currentLang][idx];
+            if (preset && preset.text) {
+                document.getElementById('gb-message').value = preset.text;
+            }
+        }
+
+        function submitGuestbook(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('gb-name');
+            const msgInput = document.getElementById('gb-message');
+
+            const nameVal = nameInput.value.trim();
+            const msgVal = msgInput.value.trim();
+            if (!nameVal || !msgVal) return;
+
+            guestbookEntries.unshift({
+                name: nameVal,
+                time: currentLang === 'vi' ? 'Vừa xong' : 'Just now',
+                msg: msgVal
+            });
+
+            nameInput.value = '';
+            msgInput.value = '';
+            document.getElementById('gb-preset').value = '0';
+
+            renderGuestbookList();
+            showToast(currentLang === 'vi' ? 'Cảm ơn bạn đã ghi lưu bút trang trọng!' : 'Thank you for signing the digital guestbook!', 'success');
+        }
+
+        function renderGuestbookList() {
+            const list = document.getElementById('guestbook-list');
+            list.innerHTML = guestbookEntries.map(entry => `
+                <div class="p-4 rounded-2xl bg-white border border-bronze/20 shadow-sm space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-xs sm:text-sm text-vermilion">${escapeHtml(entry.name)}</span>
+                        <span class="text-[11px] text-granite/70 font-medium">${escapeHtml(entry.time)}</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-granite-dark italic leading-relaxed">“${escapeHtml(entry.msg)}”</p>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Initialize Everything on Window Load
+        window.onload = function() {
+            initPanoramaDrag();
+            setLanguage('vi');
+        };
+    </script>
+</body>
+</html>
